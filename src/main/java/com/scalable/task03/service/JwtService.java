@@ -27,6 +27,7 @@ public class JwtService {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtConfig.getExpiration());
 
+        // JWT subject is the unique identity (email) used by security.
         return Jwts.builder()
                 .subject(user.getEmail())
                 .claim("role", user.getRole().name())
@@ -45,6 +46,7 @@ public class JwtService {
             extractClaims(token);
             return true;
         } catch (JwtException e) {
+            // Any parsing/signature/expiry error marks token as invalid.
             return false;
         }
     }
@@ -54,6 +56,7 @@ public class JwtService {
     }
 
     private Claims extractClaims(String token) {
+        // verifyWith() enforces signature validation using the configured key.
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()

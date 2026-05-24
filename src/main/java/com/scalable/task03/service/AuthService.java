@@ -28,6 +28,7 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
         }
 
+        // New users are stored with BCrypt-hashed passwords and default USER role.
         User user = new User();
         user.setName(request.name());
         user.setEmail(request.email());
@@ -40,6 +41,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        // Keep the same error message for both cases to avoid user enumeration.
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
