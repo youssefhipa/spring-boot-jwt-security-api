@@ -3,9 +3,12 @@ package com.scalable.task03.service;
 import com.scalable.task03.dto.AuthResponse;
 import com.scalable.task03.dto.LoginRequest;
 import com.scalable.task03.dto.RegisterRequest;
+import com.scalable.task03.model.User;
 import com.scalable.task03.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthService {
@@ -20,13 +23,31 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    // TODO: See Task 3 spec — AuthService.
-
     public AuthResponse register(RegisterRequest request) {
-        return null;
+        if (userRepository.existsByEmail(request.email())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
+        }
+
+        User user = new User();
+        user.setName(request.name());
+        user.setEmail(request.email());
+        user.setPassword(passwordEncoder.encode(request.password()));
+
+        User savedUser = userRepository.save(user);
+        String token = jwtService.generateToken(savedUser);
+
+        return new AuthResponse(token, jwtService.getExpiration());
     }
 
     public AuthResponse login(LoginRequest request) {
-        return null;
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
+
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        }
+
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(token, jwtService.getExpiration());
     }
 }
