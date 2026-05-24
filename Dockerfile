@@ -10,7 +10,7 @@ ENV USER_NAME=Docker_Youssef_Hipa
 
 # TODO: Replace with your student ID, prefixed with Docker_. Format: Docker_XX_XXXXX
 # Example: Docker_55_8078
-ENV ID=Docker_16_001371
+ENV ID=Docker_16001371
 
 EXPOSE 8080
 

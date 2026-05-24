@@ -4,7 +4,7 @@ This repository contains Task 3 implementation for **Architecture of Massively S
 
 ## Student Info
 - Name: `Youssef Hipa`
-- ID: `16-001371`
+- ID: `16001371`
 
 ## What is implemented
 - JWT configuration and token service
@@ -24,14 +24,14 @@ This repository contains Task 3 implementation for **Architecture of Massively S
 Already configured in this repo:
 - `src/main/resources/application.yaml`
   - `USER_NAME: Youssef_Hipa_Local`
-  - `ID: 16_001371`
+  - `ID: 16001371`
 - `Dockerfile`
   - `ENV USER_NAME=Docker_Youssef_Hipa`
-  - `ENV ID=Docker_16_001371`
+  - `ENV ID=Docker_16001371`
 - `docker-compose.yaml`
   - app service enabled on host port `1371`
   - `USER_NAME: Compose_Youssef_Hipa`
-  - `ID: Compose_16_001371`
+  - `ID: Compose_16001371`
 
 ## Run locally (without Docker app container)
 Start PostgreSQL with Docker:

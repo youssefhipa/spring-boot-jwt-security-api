@@ -4,7 +4,7 @@ USER_NAME: Youssef_Hipa_Local
 
 # TODO: Replace with your student ID. Format: XX_XXXXX
 # Example: 55_8078
-ID: 16_001371
+ID: 16001371
 
 spring:
   datasource:

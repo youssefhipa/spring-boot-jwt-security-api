@@ -20,7 +20,7 @@ services:
     build: .
     # TODO: Replace XX-XXXXX with your student ID using a hyphen.
     # Example: 55-8078_container
-    container_name: 16-001371_container
+    container_name: 16001371_container
     ports:
       # TODO: Replace XXXXX with the second part of your student ID (the 5 digits after the underscore).
       # Example: "8078:8080"
@@ -31,7 +31,7 @@ services:
       USER_NAME: Compose_Youssef_Hipa
       # TODO: Replace with your student ID, prefixed with Compose_. Format: Compose_XX_XXXXX
       # Example: Compose_55_8078
-      ID: Compose_16_001371
+      ID: Compose_16001371
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/task03db
     depends_on:
       - postgres
