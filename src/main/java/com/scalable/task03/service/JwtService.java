@@ -1,6 +1,7 @@
 package com.scalable.task03.service;
 
 import javax.crypto.SecretKey;
+import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,10 @@ import com.scalable.task03.config.JwtConfig;
 import com.scalable.task03.model.User;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
@@ -18,25 +23,46 @@ public class JwtService {
         this.jwtConfig = jwtConfig;
     }
 
-    // TODO: See Task 3 spec — JwtService.
+    public String generateToken(User user) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + jwtConfig.getExpiration());
 
-    String generateToken(User user) {
-        return null;
+        return Jwts.builder()
+                .subject(user.getEmail())
+                .claim("role", user.getRole().name())
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(getSigningKey())
+                .compact();
     }
 
-    String extractUsername(String token) {
-        return null;
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
     }
 
-    boolean isTokenValid(String token) {
-        return false;
+    public boolean isTokenValid(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 
-    Claims extractClaims(String token) {
-        return null;
+    public long getExpiration() {
+        return jwtConfig.getExpiration();
     }
 
-    SecretKey getSigningKey() {
-        return null;
+    private Claims extractClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtConfig.getSecret());
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }
